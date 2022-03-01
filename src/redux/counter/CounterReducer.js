@@ -2,6 +2,8 @@ import React from "react";
 import { combineReducers } from "redux";
 import { INCREMENT , DECREMENT , increment , decrement, NAME } from "./counterAction";
 // import  { combineReducers } from "redux"
+import { FetchDataReducer } from "../Fetchapi/FetchingReducer"
+
 
 
 const counterINitialStare = {
@@ -23,7 +25,7 @@ export  const counterReducer = (state =  countInitalState , action = {})=>{
 
     switch(action.type){
 
-        case INCREMENT :
+        case `${INCREMENT}1` :
             return {
                 ...state,
                 count : state.count + 1 
@@ -65,7 +67,8 @@ export const nameReducer = (state = nameInitalState , action = {})=>{
 const rootReducer = combineReducers(
     {
         counter: counterReducer, 
-        name: nameReducer
+        name: nameReducer ,
+        fetch : FetchDataReducer
     })
 
 export {rootReducer}
