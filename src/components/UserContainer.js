@@ -17,8 +17,9 @@ export default function UserContainer   () {
     },[]);
   return (
     <div>
-        <h1>All user fettching using a api redux</h1>
+        <h1>All user fettching using a api  redux</h1>
         <ul>
+          {usersSelector.loading && <h1>loading 1......</h1>}
            {
                usersSelector.loading ? <h1>loading...</h1> :
                usersSelector.error  ?  [usersSelector.error].map(  (err,index)=>  <h1 key ={index} >err</h1>  )

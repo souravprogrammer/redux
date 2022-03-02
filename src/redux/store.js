@@ -4,7 +4,7 @@ import { counterReducer , rootReducer , nameReducer } from "./counter/CounterRed
 
 import thunk from "redux-thunk"
 import  createSagaMiddleware from "redux-saga"
-import { watcherIncrement } from "./counter/saga/saga"
+import { watcherIncrement ,watcherDectriment , rootSaga} from "./counter/saga/saga"
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -24,4 +24,4 @@ const sagaMiddleware = createSagaMiddleware()
  */
 export const store = createStore(rootReducer ,applyMiddleware(logger,thunk,sagaMiddleware))
 
-sagaMiddleware.run(watcherIncrement)
+sagaMiddleware.run(rootSaga)

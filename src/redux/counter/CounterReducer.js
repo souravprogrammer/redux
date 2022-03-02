@@ -32,7 +32,7 @@ export  const counterReducer = (state =  countInitalState , action = {})=>{
 
             }
 
-            case DECREMENT :
+            case `${DECREMENT}1` :
                 return {
                     ...state,
                     count : state.count - 1 
@@ -49,9 +49,8 @@ export const nameReducer = (state = nameInitalState , action = {})=>{
     switch(action.type){
         case NAME : 
         return {
-        
             username : "value updated"
-        }
+               }
 
         default :
         return state 

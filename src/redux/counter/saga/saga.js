@@ -1,6 +1,7 @@
-import {takeEvery , takeLatest ,put } from "redux-saga/effects"
-import { increment, INCREMENT } from "../counterAction"
+import {takeEvery , takeLatest ,put, call, take, fork, all } from "redux-saga/effects"
+import { decrement, DECREMENT, increment, INCREMENT } from "../counterAction"
 import { delay } from "redux-saga/effects"
+import axios from "axios"
 // import {  } from "redux-saga/effects"
 
 
@@ -21,23 +22,64 @@ so this is where we are going to ceate our saga
 
 */
 
+// this get call method is represent that when we have to manually manage everything error handling or data manuplation while returning we 
+// make our own async function to handel that , 
+// .. but if we don't  want it we will directly pass axious/fetch  with args it it directlly it will return us the desired output that we wanted
+const getCall = (x,some)=>{
+    console.log(">>",some)
+    return axios.get(x).then(data=>{
+        
+    return data.data
+   }).catch(error=> error )
+ }
 
 function * incrementCount(action){
 
-    console.log(action)
-    yield delay(5000)
+    console.log(`Async INCRIMENT CALLED ;   ${action}`)
+
+    //yield delay(2000)
+
+   
+
+
+   const data = yield call(axios.get,"https://jsonplaceholder.typicode.com/users")
+   console.log(data)
+   
+
     // yield put( {
     //     type : `${INCREMENT}1`
     // })
-    yield  console.log("kt gya.. tera nhi pdhe ga ye ab")
+    yield  console.log("action canceleld ....")
+
+}
+
+const decrementConut  = (action)=>{
+
+    console.log(`called ACTION : ${DECREMENT}` ) ;
+
 
 }
 
 export  function * watcherIncrement(){
 
-    yield takeLatest(INCREMENT , incrementCount )
-
-    yield "soruav"
-  
+    yield takeLatest(INCREMENT, incrementCount)
+    // yield take(INCREMENT)
+    // yield fork(incrementCount) // FORK WILL CALL THE PROMICE BUT WILL NOT BLOCK ANY  ANY THING .. MEANS IT WILL CONTINUE TO RENDER AFTER FORM...
+    // console.log("AFTER FORK")
+    // // yield 3
+    // console.log("AFTER FORK 3")
 
 }
+export function *watcherDectriment(){
+    yield takeLatest(DECREMENT,decrementConut)
+}
+
+
+// this saga watcher connecting all the watcher together like combineReducer( { name : reducername , name2 : reducername2    }  ) returns a rootreducer 
+// this rootsaga  all yeld function execute all the watcher at once so we don't have to manually do that
+export function* rootSaga() {
+    yield all([
+      watcherIncrement(),
+      watcherDectriment()
+    ])
+  }
